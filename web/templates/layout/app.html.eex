@@ -8,14 +8,13 @@
     <meta name="author" content="">
 
     <title>Hello Rumbl!</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/css/materialize.min.css">
     <link rel="stylesheet" href="<%= static_path(@conn, "/css/app.css") %>">
   </head>
 
   <body>
     <div class="container">
       <header class="header">
-        <nav role="navigation">
-        </nav>
         <span class="logo"></span>
       </header>
 

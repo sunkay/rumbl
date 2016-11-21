@@ -1,10 +1,22 @@
 <div>
-  <span>list of users goes here</span>
-  <ul>
-    <%= Enum.map(@users, fn user -> %>
-    <li>
-      <%= user.name %>      
-    </li>
-    <% end) %>
-  </ul>
+  <table class="striped">
+      <thead>
+        <tr>
+            <th data-field="id">ID</th>
+            <th data-field="name">Name</th>
+            <th data-field="username">Username</th>
+        </tr>
+      </thead>
+      <tbody>
+        <%= Enum.map(@users, fn user -> %>
+          <tr>
+            <td><%= link Integer.to_string(user.id), to: users_path(@conn, :show, user.id)   %></td>
+            <td><%= user.name %></td>
+            <td><%= user.username %></td>
+          </tr>
+        <% end) %>
+      </tbody>
+  </table>
+
+
 </div>

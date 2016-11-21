@@ -1,0 +1,17 @@
+<div>
+  <%= link "<-back", to: users_path(@conn, :index) %>
+  <table class="striped">
+      <thead>
+        <tr>
+            <th data-field="name">Name</th>
+            <th data-field="username">Username</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><%= @user.name %></td>
+          <td><%= @user.username %></td>
+        </tr>
+      </tbody>
+  </table>
+</div>
