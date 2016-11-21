@@ -17,6 +17,7 @@ defmodule Rumbl.Router do
     pipe_through :browser # Use the default browser stack
 
     get "/", PageController, :index
+    get "/users", UsersController, :getUsers
   end
 
   # Other scopes may use custom stacks.
