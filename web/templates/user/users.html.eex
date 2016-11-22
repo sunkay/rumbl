@@ -1,4 +1,5 @@
 <div>
+  <%= link "Create User", to: user_path(@conn, :new) %>
   <table class="striped">
       <thead>
         <tr>
