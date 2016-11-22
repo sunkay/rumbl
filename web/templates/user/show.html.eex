@@ -1,5 +1,5 @@
 <div>
-  <%= link "<-back", to: users_path(@conn, :index) %>
+  <%= link "<-back", to: user_path(@conn, :index) %>
   <table class="striped">
       <thead>
         <tr>

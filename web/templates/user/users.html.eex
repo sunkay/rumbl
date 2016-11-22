@@ -10,7 +10,7 @@
       <tbody>
         <%= Enum.map(@users, fn user -> %>
           <tr>
-            <td><%= link Integer.to_string(user.id), to: users_path(@conn, :show, user.id)   %></td>
+            <td><%= link Integer.to_string(user.id), to: user_path(@conn, :show, user.id)   %></td>
             <td><%= user.name %></td>
             <td><%= user.username %></td>
           </tr>

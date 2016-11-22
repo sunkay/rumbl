@@ -16,9 +16,8 @@ defmodule Rumbl.Router do
   scope "/", Rumbl do
     pipe_through :browser # Use the default browser stack
 
-    get "/users", UsersController, :index
-    get "/users/:id", UsersController, :show
     get "/", PageController, :index
+    resources "/users", UserController, only: [:index, :show, :new, :create]
 
   end
 
