@@ -2,8 +2,10 @@ defmodule Rumbl.VideoController do
   use Rumbl.Web, :controller
 
   alias Rumbl.Video
+  alias Rumbl.Category
 
   plug Rumbl.Plugs.RequireAuth when action in [:index, :show]
+  plug :load_categories when action in [:new, :create, :edit, :update]
 
   def action(conn, _) do
     apply(__MODULE__, action_name(conn),
@@ -26,9 +28,12 @@ defmodule Rumbl.VideoController do
 
   def create(conn, %{"video" => video_params}, user) do
 
+    %{"category_id" => category_id} = video_params
+    category = Repo.get(Category, category_id)
+
     changeset =
       user
-      |> build_assoc(:videos)
+      |> build_assoc(:videos, category_id: category.id)
       |> Video.changeset(video_params)
 
     case Repo.insert(changeset) do
@@ -83,5 +88,15 @@ defmodule Rumbl.VideoController do
   """
   defp user_videos(user) do
     assoc(user, :videos)
+  end
+
+  defp load_categories(conn, _) do
+    query =
+      Category
+      |> Category.alphabetical
+      |> Category.names_and_ids
+
+    categories = Repo.all query
+    assign(conn, :categories, categories)
   end
 end
