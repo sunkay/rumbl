@@ -15,4 +15,19 @@ defmodule Rumbl.VideoControllerTest do
         assert conn.halted
       end)
   end
+
+  setup  do
+    user = insert_user(username: "max")
+    conn = assign(conn(), :current_user, user)
+    {:ok, conn: conn, user: user}
+  end
+
+  test "Lists all user's videos on index route", %{conn: conn, user: user} do
+    user_video = insert_video(user, title: "funny cats")
+    other_video = insert_video(user, title: "another video")
+
+    conn = get conn, video_path(conn, :index)
+    assert html_response(conn, 200)
+  end
+
 end
