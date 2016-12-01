@@ -3,11 +3,10 @@ defmodule Rumbl.UserController do
 
   alias Rumbl.User
 
+  plug Rumbl.Plugs.RequireAuth when action in [:index, :show]
+
   def index(conn, _params) do
-
     users = Repo.all(User)
-    IO.inspect users
-
     render conn, "users.html", users: users
   end
 
@@ -22,7 +21,7 @@ defmodule Rumbl.UserController do
   end
 
   def create(conn, %{"user" => user_params}) do
-    changeset = User.changeset(%User{}, user_params)
+    changeset = User.registration_changeset(%User{}, user_params)
 
     case Repo.insert(changeset) do
       {:ok, user} ->
@@ -34,4 +33,5 @@ defmodule Rumbl.UserController do
         render conn, "new.html", changeset: changeset
     end
   end
+
 end

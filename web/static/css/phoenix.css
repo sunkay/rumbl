@@ -12,7 +12,17 @@
 body, form, ul, table {
   margin-top: 20px;
   margin-bottom: 20px;
+  margin-left: 20px;
+  margin-right: 20px;
+  font-size: 18px;
 }
+
+/* Materialize CSS specific. */
+nav ul a {
+font-size: 1.5rem;
+color: #FF8;
+}
+
 
 /* Phoenix flash messages */
 .alert:empty { display: none; }
@@ -25,6 +35,9 @@ form.link, form.button {
 /* Custom page header */
 .header {
   border-bottom: 1px solid #e5e5e5;
+}
+.brand-logo{
+  margin-left: 20px;
 }
 .logo {
   width: 519px;

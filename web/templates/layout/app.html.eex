@@ -8,15 +8,40 @@
     <meta name="author" content="">
 
     <title>Hello Rumbl!</title>
+    <!--Import Google Icon Font-->
+    <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/css/materialize.min.css">
+
     <link rel="stylesheet" href="<%= static_path(@conn, "/css/app.css") %>">
   </head>
 
   <body>
-    <div class="container">
-      <header class="header">
-        <span class="logo"></span>
-      </header>
+        <nav>
+          <div class="nav-wrapper">
+            <%= link "Rumbl", to: page_path(@conn, :index), class: "brand-logo"%>
+            <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
+            <ul class="right hide-on-med-and-down">
+              <%= if @current_user do %>
+                <span>
+                  <li class="navbar-text"><%= @current_user.username %></li>
+                  <li><%= link "Logout", to: session_path(@conn, :delete, @current_user), method: "delete", class: "navbar-text"%></li>
+                </span>
+              <% else %>
+                  <li><%= link "Register", to: user_path(@conn, :new) %></li>
+                  <li><%= link "Login", to: session_path(@conn, :new)%></li>
+              <% end %>
+            </ul>
+            <ul class="side-nav" id="mobile-demo">
+              <%= if @current_user do %>
+                  <li><%= link "Logout", to: session_path(@conn, :delete, @current_user), method: "delete" %></li>
+              <% else %>
+                  <li><%= link "Register", to: user_path(@conn, :new) %></li>
+                  <li><%= link "Login", to: session_path(@conn, :new)%></li>
+              <% end %>
+            </ul>
+          </div>
+        </nav>
+      <div class="container">
 
       <p class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %></p>
       <p class="alert alert-danger" role="alert"><%= get_flash(@conn, :error) %></p>
@@ -26,6 +51,9 @@
       </main>
 
     </div> <!-- /container -->
+    <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/js/materialize.min.js"></script>
     <script src="<%= static_path(@conn, "/js/app.js") %>"></script>
   </body>
 </html>
