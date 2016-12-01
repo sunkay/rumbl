@@ -5,7 +5,7 @@ defmodule Rumbl.VideoController do
   alias Rumbl.Category
 
   plug Rumbl.Plugs.RequireAuth when action in [:index, :show]
-  plug :load_categories when action in [:new, :create, :edit, :update]
+  plug :load_categories when action in [:index, :new, :create, :edit, :update]
 
   def action(conn, _) do
     apply(__MODULE__, action_name(conn),
