@@ -1,5 +1,22 @@
 defmodule Rumbl.VideoControllerTest do
   use Rumbl.ConnCase
+  alias Rumbl.Category
+  alias Rumbl.Repo
+
+  setup  %{conn: conn} = config do
+    if username = config[:login_as] do
+      user = insert_user(username: username)
+      conn = assign(build_conn(), :current_user, user)
+
+      # load categories into connection assigns
+
+      assign(conn, :categories, %{id: 1, name: "Action"})
+
+      {:ok, conn: conn, user: user}
+    else
+      :ok
+    end
+  end
 
   test "Redirection happens on routes with no user session", %{conn: conn} do
     Enum.each([
@@ -16,18 +33,16 @@ defmodule Rumbl.VideoControllerTest do
       end)
   end
 
-  setup  do
-    user = insert_user(username: "max")
-    conn = assign(conn(), :current_user, user)
-    {:ok, conn: conn, user: user}
-  end
-
-  test "Lists all user's videos on index route", %{conn: conn, user: user} do
-    user_video = insert_video(user, title: "funny cats")
-    other_video = insert_video(user, title: "another video")
+  @tag login_as: "max"
+  test "list all videos on route index", %{conn: conn, user: user} do
+    user_video = insert_video(user)
+    IO.inspect user_video
 
     conn = get conn, video_path(conn, :index)
-    assert html_response(conn, 200)
+    #assert html_response(conn, 200) =~ "Listing videos"
+    #assert String.contains?(conn.resp_body, user_video.title)
   end
+
+
 
 end
