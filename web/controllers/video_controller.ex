@@ -83,9 +83,6 @@ defmodule Rumbl.VideoController do
     |> redirect(to: video_path(conn, :index))
   end
 
-  @doc """
-    uses Ecto assoc to return a query which scopes the video's owned by the user
-  """
   defp user_videos(user) do
     assoc(user, :videos)
   end

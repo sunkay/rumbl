@@ -15,6 +15,7 @@ defmodule Rumbl.TestHelpers do
 
   def insert_video(user) do
     cat = Repo.insert!(%Rumbl.Category{name: "Action", id: 1})
+    
     changeset =
     user
     |> Ecto.build_assoc(:videos, category_id: cat.id)

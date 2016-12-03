@@ -1,16 +1,10 @@
 defmodule Rumbl.VideoControllerTest do
   use Rumbl.ConnCase
-  alias Rumbl.Category
-  alias Rumbl.Repo
 
   setup  %{conn: conn} = config do
     if username = config[:login_as] do
       user = insert_user(username: username)
       conn = assign(build_conn(), :current_user, user)
-
-      # load categories into connection assigns
-
-      assign(conn, :categories, %{id: 1, name: "Action"})
 
       {:ok, conn: conn, user: user}
     else
@@ -35,14 +29,10 @@ defmodule Rumbl.VideoControllerTest do
 
   @tag login_as: "max"
   test "list all videos on route index", %{conn: conn, user: user} do
-    user_video = insert_video(user)
-    IO.inspect user_video
-
+    {:ok, user_video} = insert_video(user)
     conn = get conn, video_path(conn, :index)
-    #assert html_response(conn, 200) =~ "Listing videos"
-    #assert String.contains?(conn.resp_body, user_video.title)
+    assert html_response(conn, 200) =~ "Listing videos"
+    assert String.contains?(conn.resp_body, user_video.title)
   end
-
-
 
 end

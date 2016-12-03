@@ -18,7 +18,11 @@
       <td><%= video.url %></td>
       <td><%= video.title %></td>
       <td><%= video.description %></td>
-      <td><%= Enum.at(@categories, video.category_id) |> Tuple.to_list |> List.first %></td>
+      <td><%=
+         {action, _} =
+           Enum.find(@categories, fn({_, id}) ->id == video.category_id end)
+         action
+         %></td>
       <td class="text-right">
         <%= link "Show", to: video_path(@conn, :show, video), class: "btn btn-default btn-xs" %>
         <%= link "Edit", to: video_path(@conn, :edit, video), class: "btn btn-default btn-xs" %>
