@@ -28,8 +28,17 @@ defmodule Rumbl.VideoController do
 
   def create(conn, %{"video" => video_params}, user) do
 
-    %{"category_id" => category_id} = video_params
-    category = Repo.get(Category, category_id)
+    category =
+      case video_params do
+        %{"category_id" => ""} ->
+          #default assignment of category
+          Repo.get(Category, 1)
+        %{"category_id" => category_id} ->
+          Repo.get(Category, category_id)
+        _ ->
+          # category_id is not present in the params map
+          Repo.get(Category, 1)
+      end
 
     changeset =
       user
