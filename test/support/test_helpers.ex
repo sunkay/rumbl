@@ -13,13 +13,13 @@ defmodule Rumbl.TestHelpers do
       |> Repo.insert!()
   end
 
-  def insert_video(user) do
+  def insert_video(user, attrs \\ %{}) do
     cat = Repo.get_by(Rumbl.Category, name: "Action")
 
     changeset =
     user
     |> Ecto.build_assoc(:videos, category_id: cat.id)
-    |> Rumbl.Video.changeset(%{"title" => "xyz", "url" => "urlval", "description" => "desc"})
+    |> Rumbl.Video.changeset(attrs)
 
     Repo.insert(changeset)
   end

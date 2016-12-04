@@ -4,7 +4,8 @@ defmodule Rumbl.VideoControllerTest do
   alias Rumbl.Video
 
   @valid_attrs  %{url: "http://youtube.com", title: "XYZ", description: "Testing"}
-  @invalid_attrs  %{url: "http://youtube.com"}
+  @update_attrs  %{url: "http://youtube.com", title: "UpdatedTitle", description: "UpdatedDesc"}
+  @invalid_attrs  %{url: ""}
 
   setup  %{conn: conn} = config do
     if username = config[:login_as] do
@@ -38,7 +39,7 @@ defmodule Rumbl.VideoControllerTest do
 
   @tag login_as: "max"
   test "list all videos on route index", %{conn: conn, user: user} do
-    {:ok, user_video} = insert_video(user)
+    {:ok, user_video} = insert_video(user, @valid_attrs)
     conn = get conn, video_path(conn, :index)
     assert html_response(conn, 200) =~ "Listing videos"
     assert String.contains?(conn.resp_body, user_video.title)
@@ -58,5 +59,29 @@ defmodule Rumbl.VideoControllerTest do
     assert html_response(conn, 200) =~ "Oops, something went wrong"
   end
 
+  @tag login_as: "max"
+  test "update user video info with valid_attrs", %{conn: conn, user: user} do
+    {:ok, user_video} = insert_video(user, @valid_attrs)
+
+    conn = put conn, video_path(conn, :update, user_video), video: @update_attrs
+    assert redirected_to(conn) == video_path(conn, :show, user_video)
+  end
+
+  @tag login_as: "max"
+  test "update user video erros with invalid_attrs", %{conn: conn, user: user} do
+    {:ok, user_video} = insert_video(user, @valid_attrs)
+
+    conn = put conn, video_path(conn, :update, user_video), video: @invalid_attrs
+    assert html_response(conn, 200) =~ "Edit video"
+  end
+
+  @tag login_as: "max"
+  test "deletes user video", %{conn: conn, user: user} do
+    {:ok, user_video} = insert_video(user, @valid_attrs)
+
+    conn = delete conn, video_path(conn, :delete, user_video)
+    assert redirected_to(conn) == video_path(conn, :index)
+    refute Repo.get(Video, user_video.id)
+  end
 
 end
