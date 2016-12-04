@@ -84,4 +84,27 @@ defmodule Rumbl.VideoControllerTest do
     refute Repo.get(Video, user_video.id)
   end
 
+  @tag login_as: "max"
+  test "check authorizaton decisions a non-owner cannot make changes to a users video",
+     %{conn: conn, user: user} do
+       {:ok, video} = insert_video(user, @valid_attrs)
+       non_owner = insert_user(%{username: "sneaky"})
+
+       conn = assign(conn, :current_user, non_owner)
+
+       assert_error_sent :not_found, fn ->
+         get(conn, video_path(conn, :show, video))
+       end
+       assert_error_sent :not_found, fn ->
+         get(conn, video_path(conn, :edit, video))
+       end
+       assert_error_sent :not_found, fn ->
+         put(conn, video_path(conn, :update, video, video: @valid_attrs))
+       end
+       assert_error_sent :not_found, fn ->
+         delete(conn, video_path(conn, :delete, video))
+       end
+
+  end
+
 end
